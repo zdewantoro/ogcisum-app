@@ -1,17 +1,52 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/HomePage";
+import Share from "./pages/ShareSamplesPage";
+import Editing from "./pages/EditingSamplesPage";
+import {
+  toneObject,
+  toneTransport,
+  tonePartGuitar,
+  tonePartPiano,
+  tonePartFrenchHorn,
+  tonePartDrums,
+} from "./data/instruments";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+ReactDOM.render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route
+          path="/Create-Samples"
+          element={
+            <Editing
+              toneObject={toneObject}
+              toneTransport={toneTransport}
+              tonePartGuitar={tonePartGuitar}
+              tonePartPiano={tonePartPiano}
+              tonePartFrenchHorn={tonePartFrenchHorn}
+              tonePartDrums={tonePartDrums}
+            />
+          }
+        />
+        <Route
+          path="/Edit-Samples/:id"
+          element={
+            <Editing
+              toneObject={toneObject}
+              toneTransport={toneTransport}
+              tonePartGuitar={tonePartGuitar}
+              tonePartPiano={tonePartPiano}
+              tonePartFrenchHorn={tonePartFrenchHorn}
+              tonePartDrums={tonePartDrums}
+            />
+          }
+        />
+        <Route path="/Share-Samples" element={<Share />} />
+      </Routes>
+    </BrowserRouter>
+  </React.StrictMode>,
+  document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
