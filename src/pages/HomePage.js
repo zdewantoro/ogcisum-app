@@ -1,15 +1,26 @@
-import Template from "../components/template/Template";
 import CreatedSamples from "../components/samples/CreatedSamples";
 import CreatedButton from "../components/samples/CreateButton";
 import { useState, useEffect } from "react";
 
+/**
+ * This function is used as a home page to display all of the data and preview the sample
+ * Create and edit the sample linked to editing sample page
+ * @returns react elements
+ */
+
 function Home() {
+  /**
+   * This variable is use as a state for the samples
+   */
   const [samples, setSamples] = useState([]);
 
   useEffect(() => {
     getSample();
   }, []);
 
+  /**
+   * This function is used to fetch the data from api to get the data and id
+   */
   async function getSample() {
     const response = await fetch(
       "http://wmp.interaction.courses/api/v1/?apiKey=TX0zQS9J&mode=read&endpoint=samples&order=asc"
@@ -19,24 +30,17 @@ function Home() {
     setSamples(sample);
   }
 
-  function updateSample(id, newSample) {
-    // setSamples((prevState) =>
-    //   prevState.map((sample) => (sample.id === id ? { ...newSample } : sample))
-    // );
-  }
-
   return (
-    <Template title="Samples You've Created">
-      {samples.map((data) => (
-        <CreatedSamples
-          sample={data}
-          key={data.id}
-          updateSample={updateSample}
-        ></CreatedSamples>
-      ))}
+    <div>
+      <h1>Samples You've Created Here</h1>
+      <div className="samples-container">
+        {samples.map((data) => (
+          <CreatedSamples sample={data} key={data.id}></CreatedSamples>
+        ))}
+      </div>
 
       <CreatedButton></CreatedButton>
-    </Template>
+    </div>
   );
 }
 

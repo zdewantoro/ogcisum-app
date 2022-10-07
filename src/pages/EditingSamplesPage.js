@@ -1,11 +1,20 @@
 import React from "react";
-import Template from "../components/template/Template";
 import InputForm from "../components/music/InputForm";
 import TypeContainer from "../components/music/TypeContainer";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Sequencer from "../components/music/Sequencer";
 import { useLocation, useParams } from "react-router-dom";
 
+/**
+ * This function is used as a page to edit and create a sample music with the title
+ * @param {Tone} toneObject
+ * @param {Tone} toneTransport
+ * @param {Tone} tonePartGuitar
+ * @param {Tone} tonePartPiano
+ * @param {Tone} tonePartFrenchHorn
+ * @param {Tone} tonePartDrums
+ * @returns react element
+ */
 function EditingSamplesPage({
   toneObject,
   toneTransport,
@@ -14,12 +23,15 @@ function EditingSamplesPage({
   tonePartFrenchHorn,
   tonePartDrums,
 }) {
+  /**
+   * Variable to be used on the code
+   */
   const location = useLocation();
   const { id } = useParams();
-  console.log(location.pathname);
   const [instrument, setInstrument] = useState(
     location.state?.sample ? location.state.sample.type : ""
   );
+
   const [title, setTitle] = useState(
     location.state?.sample ? location.state.sample.name : ""
   );
@@ -170,9 +182,11 @@ function EditingSamplesPage({
         ]
   );
 
-  useEffect(() => {
-    console.log(sequences);
-  }, [sequences]);
+  /**
+   * This function is used to handle the bar when it is click. It will change a particular sequence in a particular note.
+   * By first checking the row/note and then check the bar/column of the note.
+   * Then it will reverse the current value if its clicked else it will stay the same.
+   */
   function handleBarClick(keyIndex, barKey) {
     return function (barIndex) {
       setSequences((prevState) =>
@@ -186,6 +200,9 @@ function EditingSamplesPage({
     };
   }
 
+  /**
+   * A function to post the data to the database
+   */
   async function handleSubmit() {
     if (location.pathname === "/Create-Samples") {
       await fetch(
@@ -196,55 +213,30 @@ function EditingSamplesPage({
         }
       );
     } else {
-      const response = await fetch(
+      await fetch(
         `http://wmp.interaction.courses/api/v1/?apiKey=TX0zQS9J&mode=update&endpoint=samples&sampleType=${instrument}&sampleName=${title}&id=${id}`,
         {
           method: "POST",
           body: JSON.stringify(sequences),
         }
       );
-
-      const json = await response.json();
-
-      // if (location.state?.updateEvent) {
-      //   location.state.updateEvent(location.state.sample.id, json);
-      // }
     }
   }
 
-  // useEffect(() => {
-  //   tonePartPiano.clear();
-  //   toneTransport.cancel();
-  //   toneTransport.schedule((time) => {
-  //     console.log("Preview stopped automatically.");
-  //   }, 16 / 4);
-  // });
-
-  // useEffect(() => {
-  //   if (sample !== null) {
-
-  //   }
-  // }, []);
-
-  // async function getSample() {
-  //   const musicData = await fetch(
-  //     "http://wmp.interaction.courses/api/v1/?apiKey=TX0zQS9J&mode=read&endpoint=samples&order=asc"
-  //   );
-  //   const json = await musicData.json();
-  //   const sample = json.samples;
-  //   console.log(sample);
-  //   setSequences(sample.recording_data);
-  //   setInstrument(sample.type);
-  // }
-
-  // console.log(sequences);
-
+  /**
+   * This function is used to set the instrument
+   */
   function updateInstrument(newInstrument) {
     setInstrument(newInstrument);
   }
 
   return (
-    <Template title="Editing This Sample:">
+    <div>
+      <h1 style={{ marginBottom: "2rem" }}>
+        {location.state?.sample
+          ? "Editing This Sample:"
+          : "Creating This Sample:"}
+      </h1>
       <InputForm
         title={title}
         setTitle={setTitle}
@@ -258,31 +250,33 @@ function EditingSamplesPage({
         currentInstrument={instrument}
         handleSubmit={handleSubmit}
       />
-      <TypeContainer
-        onInstrumentClicked={updateInstrument}
-        currentInstrument={instrument}
-      />
-      {sequences.map((sequence, idx) => {
-        const key = Object.keys(sequence)[0];
+      <div className="music-container">
+        <TypeContainer
+          onInstrumentClicked={updateInstrument}
+          currentInstrument={instrument}
+        />
+        {sequences.map((sequence, idx) => {
+          const key = Object.keys(sequence)[0];
 
-        return (
-          <Sequencer
-            key={key}
-            sequence={sequence[key]}
-            title={key}
-            toneObject={toneObject}
-            toneTransport={toneTransport}
-            tonePartGuitar={tonePartGuitar}
-            tonePartPiano={tonePartPiano}
-            tonePartFrenchHorn={tonePartFrenchHorn}
-            tonePartDrums={tonePartDrums}
-            note={`${key}3`}
-            onBarClicked={handleBarClick(idx, key)}
-            curInstrument={instrument}
-          />
-        );
-      })}
-    </Template>
+          return (
+            <Sequencer
+              key={key}
+              sequence={sequence[key]}
+              title={key}
+              toneObject={toneObject}
+              toneTransport={toneTransport}
+              tonePartGuitar={tonePartGuitar}
+              tonePartPiano={tonePartPiano}
+              tonePartFrenchHorn={tonePartFrenchHorn}
+              tonePartDrums={tonePartDrums}
+              note={`${key}3`}
+              onBarClicked={handleBarClick(idx, key)}
+              curInstrument={instrument}
+            />
+          );
+        })}
+      </div>
+    </div>
   );
 }
 

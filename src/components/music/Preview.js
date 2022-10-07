@@ -1,20 +1,28 @@
 import React, { useState } from "react";
-import {
+import Button from "../template/Button";
+
+/**
+ * This function is use to start and stop a saved music on the sequence
+ * Change the button when the preview start and revert it back when the music has finished
+ * Reference: https://mattluscombe.notion.site/Week-8-Contact-d2f5e272d7684d16b81996a20ac87027
+ * @param {Tone} toneObject
+ * @param {Tone} toneTransport
+ * @param {boolean[]} sequence An array of sequece that consist of true and false according to the bar id
+ * @param {Tone} tonePartGuitar
+ * @param {Tone} tonePartPiano
+ * @param {Tone} tonePartFrenchHorn
+ * @param {Tone} tonePartDrums
+ * @param {String} curInstrument The choosen instrument wether it is a guitar, piano, french horn, or drums
+ * @returns change the button when preview is clicked and start the music
+ */
+
+export default function Preview({
   toneObject,
   toneTransport,
-  tonePartDrums,
   tonePartGuitar,
   tonePartPiano,
   tonePartFrenchHorn,
-} from "../../data/instruments";
-
-export default function Preview({
-  // toneObject,
-  // toneTransport,
-  // tonePartGuitar,
-  // tonePartPiano,
-  // tonePartFrenchHorn,
-  // tonePartDrums,
+  tonePartDrums,
   sequences,
   currentInstrument,
 }) {
@@ -22,10 +30,7 @@ export default function Preview({
   function handleButtonClick() {
     toneObject.start();
     toneTransport.stop();
-
     toneTransport.cancel();
-
-    console.log(sequences);
 
     tonePartGuitar.clear();
     tonePartDrums.clear();
@@ -36,11 +41,10 @@ export default function Preview({
       setPreviewing(false);
     } else {
       setPreviewing(true);
-
       toneTransport.schedule(() => {
         console.log("Preview stopped automatically.");
         setPreviewing(false);
-      }, 16 / 4);
+      }, 16 / 2);
       sequences
         .flatMap((seq) => {
           const key = Object.keys(seq)[0];
@@ -52,7 +56,6 @@ export default function Preview({
         })
         .filter((seq) => seq.isEnabled)
         .forEach((bar) => {
-          console.log(currentInstrument);
           switch (currentInstrument) {
             case "guitar":
               tonePartGuitar.add(bar.id / 2, bar.note);
@@ -75,8 +78,8 @@ export default function Preview({
   }
 
   return (
-    <button onClick={handleButtonClick} className="normal-button">
+    <Button onClick={handleButtonClick} type="inverted">
       {previewing ? "Stop Previewing" : "Preview"}
-    </button>
+    </Button>
   );
 }

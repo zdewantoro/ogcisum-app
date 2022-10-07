@@ -1,4 +1,4 @@
-/* Color Used For Styling */
+/* Color Used For Styling  */
 
 :root {
   --purpleColorLighter: #a42de8;
@@ -8,6 +8,8 @@
   --fgColor: #800080;
   --fgColorLighter: rgba(128, 0, 128, 0.5);
   --headerTextColor: #ffffff;
+  --largeScreen: 1067pt;
+  --smallScreen: 500pt;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -28,9 +30,31 @@ body {
 }
 
 html {
-  max-width: 1067pt;
-  min-width: 500pt;
-  margin: auto;
+  box-sizing: border-box;
+  font-family: "Ubuntu";
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  margin: 0;
+}
+
+html,
+body,
+#App {
+  height: 100%;
+  margin: 0;
+}
+
+.main-content {
+  padding: 2rem 0;
+}
+
+.wrapper {
+  max-width: var(--largeScreen);
+  margin: 0 auto;
+  padding: 0 2rem;
 }
 
 /* ---------------------------------------- */
@@ -45,6 +69,7 @@ h1 {
 h3 {
   font-family: "DynaPuff";
   color: var(--fgColor);
+  margin: 0;
 }
 
 h4 {
@@ -64,9 +89,8 @@ p {
   color: var(--fgColorLighter);
 }
 
-Link {
+a {
   text-decoration: none;
-  font-family: "Ubuntu";
 }
 
 /* ---------------------------------------- */
@@ -78,12 +102,14 @@ Link {
     var(--purpleColorLighter),
     var(--blueColorLighter)
   );
-  text-decoration: none;
+  height: 72px;
+}
+
+.page-content {
+  height: 100%;
   align-items: center;
   display: flex;
-  padding-left: 30px;
-  padding-right: 30px;
-  flex-direction: row;
+
   justify-content: space-between;
 }
 
@@ -92,13 +118,12 @@ Link {
 /* Border Styling */
 
 .border-dark {
-  border: 2px solid;
-  border-color: var(--fgColor);
-  border-bottom: 5px solid;
-  border-bottom-color: var(--fgColor);
-  margin-top: 10px;
-  margin-bottom: 50px;
-  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid var(--fgColor);
+  border-bottom: 5px solid var(--fgColor);
+  padding: 1rem 2rem;
 }
 
 .border-light {
@@ -115,51 +140,47 @@ Link {
 
 /* Samples Created Styling */
 
-.wrapper {
+.samples-container {
   display: flex;
-  flex: 1;
-  padding-left: 30px;
-  padding-right: 30px;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  row-gap: 1.5rem;
+  margin-top: 2rem;
 }
 
-.rowbox-sample-container {
-  flex-direction: row;
-  color: var(--fgColor);
+.sample-card-left > p {
+  margin-top: 1rem;
 }
 
 /* ---------------------------------------- */
 
 /* Button Styling */
 
-button {
+.base-button {
   border: 1px solid;
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  margin: 0 5px;
 }
 
-button:hover {
+.base-button:hover {
   background-color: var(--purpleColorLighter);
   color: var(--fgColorLighter);
 }
 
-button:active {
+/* .base-button:active {
   background-color: var(--purpleColorLighter);
   color: var(--fgColorLighter);
-}
+} */
 
-.button-edit {
+.inverted-button {
   background-color: var(--fgColor);
-  text-align: center;
-  margin: 5px;
-  padding: 5px;
+  border: 1px solid;
 }
 
 .normal-button {
   background-color: var(--bgColor);
   color: var(--fgColor);
   text-align: center;
-  margin: 5px;
-  padding: 5px;
 }
 
 .shared-button {
@@ -167,14 +188,12 @@ button:active {
   color: var(--fgColorLighter);
   text-align: center;
   margin: 5px;
-  padding: 5px;
 }
 
 .create-button {
   align-items: center;
   text-align: center;
   margin: 5px;
-  padding: 5px;
 }
 
 /* ---------------------------------------- */
@@ -182,24 +201,22 @@ button:active {
 /* Form Input Styling */
 
 .input-form {
-  /* align-items: center; */
-  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  flex: 1;
   padding: 5px;
-  padding-left: 2%;
-  /* flex-direction: row; */
 }
 
 input {
-  padding: 10px;
-  /* padding-right: 30px; */
+  flex: 1;
+  padding: 0.5rem;
   background-color: var(--fgColorLighter);
-  width: 85%;
-  height: 20px;
+  height: 36px;
+  margin-right: 2rem;
   border: 0;
   border-radius: 5px;
   font-family: "DynaPuff";
   color: var(--fgColor);
-  margin-right: 2%;
 }
 
 /* ---------------------------------------- */
@@ -211,7 +228,9 @@ input {
 }
 
 .shared-container {
+  flex: 1;
   color: var(--fgColorLighter);
+  display: flex;
   flex-direction: row;
 }
 
@@ -222,26 +241,50 @@ input {
 
 .selected {
   background: var(--fgColor);
-  border: 1px solid var(--fgColor);
-  border-bottom: 3px solid var(--fgColor);
   color: var(--bgColor);
-  padding: 10px;
-  padding-left: 125px;
-  padding-right: 125px;
 }
 
 .not-selected {
   background: var(--bgColor);
-  border-bottom: 3px solid;
   color: var(--fgColor);
-  padding: 10px;
-  padding-left: 125px;
-  padding-right: 125px;
 }
 
 /* ---------------------------------------- */
 
 /* Type Button */
+
+.sequence-container {
+  display: flex;
+  align-items: center;
+}
+
+.sequence-container > p {
+  color: var(--fgColor);
+  flex-basis: 48px;
+  text-align: end;
+  margin-right: 1rem;
+}
+
+.music-container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.875rem;
+  margin-top: 2rem;
+}
+
+.type-button {
+  flex: 1;
+  border-style: solid;
+  border-width: 1px 1px 3px 1px;
+  border-color: var(--fgColor);
+  cursor: pointer;
+  padding: 0.5rem 0;
+}
+
+.type-button:hover {
+  background-color: var(--fgColorLighter);
+  color: var(--fgColor);
+}
 
 /* ---------------------------------------- */
 
@@ -253,20 +296,19 @@ input {
   border-bottom: 4px solid;
   border-bottom-color: var(--fgColor);
   display: flex;
-  overflow: auto;
-  margin-bottom: 10px;
-  margin-right: 40px;
+
+  flex: 1;
+  height: 2rem; /* margin-right: 40px; */
 }
 
 .sequencer > .bar {
   border: 1px solid var(--fgColor);
   width: 100%;
-  /* padding: 0.75em 0.25em; */
-  padding: 10px;
-  padding-left: 35px;
-  padding-right: 35px;
+  flex: 1;
   text-align: center;
   cursor: pointer;
+
+  /* flex-shrink: 0; */
 }
 
 .sequencer > .bar:hover {
@@ -279,4 +321,43 @@ input {
   font-weight: bold;
 }
 
+.share-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 2rem;
+}
+
+.share-container > p {
+  color: var(--fgColor);
+}
+
 /* ---------------------------------------- */
+
+@media (max-width: 500pt) {
+  .border-dark {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem;
+  }
+
+  .sample-card-right {
+    align-self: flex-end;
+  }
+
+  .page-content > h4 {
+    font-size: 0.875rem;
+  }
+
+  .input-form {
+    flex-direction: column;
+    align-items: stretch;
+    row-gap: 0.75rem;
+    padding: 0;
+  }
+
+  input {
+    margin-right: 0;
+    
+  }
+}
